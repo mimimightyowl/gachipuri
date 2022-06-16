@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabBar = ({ navigation, state }) => {
   const theme = useTheme();
-  console.log({ theme });
+
   return (
     <SafeAreaView
       style={{ backgroundColor: theme['background-basic-color-1'] }}
