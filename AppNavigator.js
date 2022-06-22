@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { AuthScreen } from './src/screens/Auth';
 import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -22,6 +23,7 @@ const BottomTabBar = ({ navigation, state }) => {
       <BottomNavigation
         selectedIndex={state.index}
         onSelect={index => navigation.navigate(state.routeNames[index])}>
+        <BottomNavigationTab title="Auth" />
         <BottomNavigationTab title="Home" />
         <BottomNavigationTab title="Details" />
       </BottomNavigation>
@@ -35,6 +37,7 @@ const TabNavigator = () => (
       screenOptions={{
         headerShown: false,
       }}>
+      <Tab.Screen name="Auth" component={AuthScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Details" component={DetailsScreen} />
     </Tab.Group>
