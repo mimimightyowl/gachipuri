@@ -14,7 +14,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
+      <ApplicationProvider {...eva} theme={eva.dark}>
         <AppNavigator />
       </ApplicationProvider>
     </SafeAreaProvider>

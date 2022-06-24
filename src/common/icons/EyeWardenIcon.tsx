@@ -6,7 +6,7 @@ interface IEyeWardenIcon {
   isSecure: boolean;
   onPress: () => void;
 }
-export const IEyeWardenIcon: React.FC<IEyeWardenIcon> = props => {
+export const EyeWardenIcon: React.FC<IEyeWardenIcon> = props => {
   return (
     <TouchableWithoutFeedback onPress={props.onPress}>
       <Icon {...props} name={props.isSecure ? 'eye-off' : 'eye'} />

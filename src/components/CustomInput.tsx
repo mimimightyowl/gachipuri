@@ -37,7 +37,7 @@ export const CustomInput: React.FC<ICustomInput> = ({
 
 const styles = StyleSheet.create({
   input: {
-    marginVertical: 15,
+    marginVertical: 5,
     maxWidth: '80%',
   },
 });
