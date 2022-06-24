@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 import React, { useEffect } from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';

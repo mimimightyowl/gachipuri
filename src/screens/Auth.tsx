@@ -7,10 +7,9 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-import { Layout, useTheme } from '@ui-kitten/components';
+import { useTheme } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EyeWardenIcon } from '../common/icons/EyeWardenIcon';
-import { Footer } from '../features/auth/Footer';
 import { AuthPanel } from '../features/auth/AuthPanel';
 
 export type IconProps = {
@@ -51,7 +50,7 @@ export const AuthScreen: React.FC = ({ navigation }: any) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardWrapper}>
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView>
           <Pressable style={styles.contentWrapper} onPress={Keyboard.dismiss}>
             <AuthPanel
               login={login}
