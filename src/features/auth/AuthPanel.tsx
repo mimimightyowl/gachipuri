@@ -60,13 +60,19 @@ export const AuthPanel: React.FC<IAuthPanel> = ({
         onPress={login && password ? () => navigation.navigate('Home') : null}>
         Sign in
       </Button>
-      <Button style={styles.button} accessoryLeft={GoogleIcon}>
+      <Button style={styles.button} status="warning" accessoryLeft={GoogleIcon}>
         Continue with Google
       </Button>
-      <Button style={styles.button} accessoryLeft={FacebookIcon}>
+      <Button
+        style={styles.button}
+        status="warning"
+        accessoryLeft={FacebookIcon}>
         Continue with Facebook
       </Button>
-      <Button style={styles.button} accessoryLeft={TwitterIcon}>
+      <Button
+        style={styles.button}
+        status="warning"
+        accessoryLeft={TwitterIcon}>
         Continue with Twitter
       </Button>
       <Layout style={styles.signUpContainer}>
@@ -74,7 +80,9 @@ export const AuthPanel: React.FC<IAuthPanel> = ({
         <Text style={styles.suggestionText}>or</Text>
         <CustomDivider />
       </Layout>
-      <Button style={styles.button}>Create Account</Button>
+      <Button style={styles.button} status="info">
+        Create Account
+      </Button>
     </Layout>
   );
 };
