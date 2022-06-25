@@ -12,6 +12,7 @@ import { GoogleIcon } from '../../common/icons/GoogleIcon';
 import { FacebookIcon } from '../../common/icons/FacebookIcon';
 import { TwitterIcon } from '../../common/icons/TwitterIcon';
 import { CustomDivider } from '../../components/CustomDivider';
+import { TouchableOpacity } from 'react-native';
 
 interface IAuthPanel {
   login: string;
@@ -36,8 +37,8 @@ export const AuthPanel: React.FC<IAuthPanel> = ({
 
   return (
     <Layout style={styles.container}>
-      <Text style={styles.header} category="h6" status="warning">
-        Choose a restaurant for tonight
+      <Text style={styles.headerText} category="h6" status="warning">
+        Help you with choosing a restaurant for tonight
       </Text>
       <CustomInput
         value={login}
@@ -54,6 +55,9 @@ export const AuthPanel: React.FC<IAuthPanel> = ({
         secureTextEntry={secureTextEntry}
         onChangeText={(nextValue: string) => setPassword(nextValue)}
       />
+      <TouchableOpacity style={styles.restorePassword}>
+        <Text style={styles.restorePasswordText}>Forgot password?</Text>
+      </TouchableOpacity>
       <Button
         disabled={login && password ? false : true}
         style={styles.button}
@@ -93,7 +97,7 @@ const themedStyles = StyleService.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
+  headerText: {
     width: '80%',
     marginTop: '20%',
     marginBottom: 20,
@@ -106,6 +110,14 @@ const themedStyles = StyleService.create({
   signUpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  restorePassword: {
+    width: '80%',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  restorePasswordText: {
+    color: 'color-basic-600',
   },
   suggestionText: {
     marginHorizontal: 10,

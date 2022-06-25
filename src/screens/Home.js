@@ -23,9 +23,8 @@ export const HomeScreen = ({ navigation }) => {
       <Layout
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View>
-          {query.data.map(todo => (
-            <Text key={todo.id}>{todo.title}</Text>
-          ))}
+          {query.data !== undefined &&
+            query.data.map(todo => <Text key={todo.id}>{todo.title}</Text>)}
         </View>
         <Button onPress={navigateDetails}>OPEN DETAILS</Button>
       </Layout>
