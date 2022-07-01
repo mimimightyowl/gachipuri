@@ -1,36 +1,42 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Input } from '@ui-kitten/components';
+import { Input, IconProps } from '@ui-kitten/components';
+import { Controller, Control, FieldValues } from 'react-hook-form';
 
 interface ICustomInput {
-  value: string;
-  label: string;
-  placeholder: string;
-  caption?: string;
-  accessoryRight?: any;
+  control: Control<FieldValues, any> | undefined;
+  name: string;
+  inputName: string;
+  accessoryRight?: (props: IconProps) => JSX.Element;
   secureTextEntry?: boolean;
-  onChangeText?: (text: string) => void;
 }
 
 export const CustomInput: React.FC<ICustomInput> = ({
-  value,
-  label,
-  placeholder,
-  caption,
+  control,
+  name,
+  inputName,
   accessoryRight,
   secureTextEntry,
-  onChangeText,
 }) => {
   return (
-    <Input
-      style={styles.input}
-      value={value}
-      label={label}
-      placeholder={placeholder}
-      caption={caption}
-      accessoryRight={accessoryRight}
-      secureTextEntry={secureTextEntry}
-      onChangeText={onChangeText}
+    <Controller
+      control={control}
+      rules={{
+        required: true,
+      }}
+      render={({ field: { onChange, onBlur, value } }) => (
+        <Input
+          style={styles.input}
+          value={value}
+          label={inputName}
+          placeholder={inputName}
+          accessoryRight={accessoryRight}
+          secureTextEntry={secureTextEntry}
+          onBlur={onBlur}
+          onChangeText={onChange}
+        />
+      )}
+      name={name}
     />
   );
 };

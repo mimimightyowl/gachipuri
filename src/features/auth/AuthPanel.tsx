@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Layout,
   Text,
@@ -6,64 +6,72 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import { CustomInput } from '../../components/CustomInput';
-import { IconProps } from '../../screens/AuthScreen';
 import { GoogleIcon } from '../../common/icons/GoogleIcon';
 import { FacebookIcon } from '../../common/icons/FacebookIcon';
 import { TwitterIcon } from '../../common/icons/TwitterIcon';
 import { CustomDivider } from '../../components/CustomDivider';
 import { TouchableOpacity } from 'react-native';
 import { CustomButton } from '../../components/CustomButton';
+import { useForm } from 'react-hook-form';
+import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 
 export interface IAuthPanel {
-  login: string;
-  setLogin: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  secureTextEntry: boolean;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  renderEyeWardenIcon: (props: IconProps) => JSX.Element;
   navigation: any;
 }
 
-export const AuthPanel: React.FC<IAuthPanel> = ({
-  login,
-  setLogin,
-  password,
-  secureTextEntry,
-  setPassword,
-  renderEyeWardenIcon,
-  navigation,
-}) => {
+export type IconProps = {
+  style: {
+    height: number;
+    width: number;
+    marginHorizontal: number;
+    tintColor: string;
+  };
+};
+
+export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
   const styles = useStyleSheet(themedStyles);
+
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const toggleSecureEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+  const renderEyeWardenIcon = (props: IconProps) => {
+    return (
+      <EyeWardenIcon
+        {...props}
+        onPress={toggleSecureEntry}
+        isSecure={secureTextEntry}
+      />
+    );
+  };
+
+  const { control, handleSubmit } = useForm();
+  const onSubmit = data => console.log(data);
 
   return (
     <Layout style={styles.container}>
       <Text style={styles.headerText} category="h6" status="warning">
         Help you with choosing a restaurant for tonight
       </Text>
+
+      <CustomInput control={control} name="login" inputName="Login" />
       <CustomInput
-        value={login}
-        label="Login"
-        placeholder="Login"
-        accessoryRight={null}
-        onChangeText={(nextValue: string) => setLogin(nextValue)}
-      />
-      <CustomInput
-        value={password}
-        label="Password"
-        placeholder="Password"
+        control={control}
+        name="password"
+        inputName="Password"
         accessoryRight={renderEyeWardenIcon}
-        secureTextEntry={secureTextEntry}
-        onChangeText={(nextValue: string) => setPassword(nextValue)}
       />
       <TouchableOpacity style={styles.restorePassword}>
         <Text style={styles.restorePasswordText}>Forgot password?</Text>
       </TouchableOpacity>
       <CustomButton
         name="Sign in"
-        disabled={login && password ? false : true}
-        onPress={() => {
-          login && password && navigation.navigate('Home');
-        }}
+        // disabled={login && password ? false : true}
+        onPress={
+          handleSubmit(onSubmit)
+          // login && password && navigation.navigate('Home');
+        }
       />
       <CustomButton
         name="Continue with Google"

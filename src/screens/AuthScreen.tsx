@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ScrollView,
   Pressable,
@@ -9,37 +9,10 @@ import {
 } from 'react-native';
 import { useTheme } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EyeWardenIcon } from '../common/icons/EyeWardenIcon';
 import { AuthPanel } from '../features/auth/AuthPanel';
 
-export type IconProps = {
-  style: {
-    height: number;
-    width: number;
-    marginHorizontal: number;
-    tintColor: string;
-  };
-};
-
 export const AuthScreen: React.FC = ({ navigation }: any) => {
-  const [login, setLogin] = useState('');
-
-  const [password, setPassword] = useState('');
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-  const toggleSecureEntry = () => {
-    setSecureTextEntry(!secureTextEntry);
-  };
   const theme = useTheme();
-  const renderEyeWardenIcon = (props: IconProps) => {
-    return (
-      <EyeWardenIcon
-        {...props}
-        onPress={toggleSecureEntry}
-        isSecure={secureTextEntry}
-      />
-    );
-  };
 
   return (
     <SafeAreaView
@@ -52,15 +25,7 @@ export const AuthScreen: React.FC = ({ navigation }: any) => {
         style={styles.keyboardWrapper}>
         <ScrollView>
           <Pressable style={styles.contentWrapper} onPress={Keyboard.dismiss}>
-            <AuthPanel
-              login={login}
-              setLogin={setLogin}
-              password={password}
-              setPassword={setPassword}
-              secureTextEntry={secureTextEntry}
-              renderEyeWardenIcon={renderEyeWardenIcon}
-              navigation={navigation}
-            />
+            <AuthPanel navigation={navigation} />
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

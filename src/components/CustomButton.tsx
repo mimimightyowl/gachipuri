@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, ImageProps } from 'react-native';
 import { RenderProp } from '@ui-kitten/components/devsupport/components/falsyFC/falsyFC.component';
-
 import { Button } from '@ui-kitten/components';
 
 interface ICustomButton {
