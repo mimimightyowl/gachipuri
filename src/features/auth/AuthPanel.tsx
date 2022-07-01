@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Layout,
   Text,
@@ -12,8 +12,9 @@ import { TwitterIcon } from '../../common/icons/TwitterIcon';
 import { CustomDivider } from '../../components/CustomDivider';
 import { TouchableOpacity } from 'react-native';
 import { CustomButton } from '../../components/CustomButton';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
+import { EMAIL_REGEX } from '../../common/config';
 
 export interface IAuthPanel {
   navigation: any;
@@ -46,20 +47,55 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
     );
   };
 
-  const { control, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FieldValues, object>({ mode: 'onChange' });
+
+  useEffect(() => {
+    console.log('rendered');
+  }, []);
+
+  const onSignInPress = (data: any) => {
+    console.log(data);
+    navigation.navigate('Home');
+  };
 
   return (
     <Layout style={styles.container}>
       <Text style={styles.headerText} category="h6" status="warning">
         Help you with choosing a restaurant for tonight
       </Text>
-
-      <CustomInput control={control} name="login" inputName="Login" />
+      <CustomInput
+        control={control}
+        name="login"
+        inputName="Login"
+        rules={{
+          required: 'Login is required',
+          minLength: {
+            value: 3,
+            message: 'Login should be at least 3 characters',
+          },
+          maxLength: {
+            value: 24,
+            message: 'Login should be max 24 characters long',
+          },
+          pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
+        }}
+      />
       <CustomInput
         control={control}
         name="password"
         inputName="Password"
+        rules={{
+          required: 'Password is required',
+          minLength: {
+            value: 6,
+            message: 'Password should be at least 6 characters',
+          },
+        }}
+        secureTextEntry={secureTextEntry}
         accessoryRight={renderEyeWardenIcon}
       />
       <TouchableOpacity style={styles.restorePassword}>
@@ -67,11 +103,8 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
       </TouchableOpacity>
       <CustomButton
         name="Sign in"
-        // disabled={login && password ? false : true}
-        onPress={
-          handleSubmit(onSubmit)
-          // login && password && navigation.navigate('Home');
-        }
+        disabled={!isValid}
+        onPress={handleSubmit(onSignInPress)}
       />
       <CustomButton
         name="Continue with Google"
