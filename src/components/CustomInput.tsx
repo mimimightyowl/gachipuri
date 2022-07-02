@@ -11,9 +11,11 @@ import { Controller, Control, FieldValues } from 'react-hook-form';
 interface ICustomInput {
   control: Control<FieldValues, any> | undefined;
   name: string;
-  inputName: string;
+  label: string;
+  placeholder: string;
   rules?: {
-    required: string;
+    validate?: (value: string) => boolean | string;
+    required?: string;
     minLength?: {
       value: number;
       message: string;
@@ -34,7 +36,8 @@ interface ICustomInput {
 export const CustomInput: React.FC<ICustomInput> = ({
   control,
   name,
-  inputName,
+  label,
+  placeholder,
   rules = {},
   accessoryRight,
   secureTextEntry,
@@ -53,8 +56,8 @@ export const CustomInput: React.FC<ICustomInput> = ({
           <Input
             style={[styles.input, error && styles.notValidInput]}
             value={value}
-            label={inputName}
-            placeholder={inputName}
+            label={label}
+            placeholder={placeholder}
             accessoryRight={accessoryRight}
             secureTextEntry={secureTextEntry}
             onBlur={onBlur}

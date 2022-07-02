@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Layout,
   Text,
@@ -53,10 +53,6 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
     formState: { isValid },
   } = useForm<FieldValues, object>({ mode: 'onChange' });
 
-  useEffect(() => {
-    console.log('rendered');
-  }, []);
-
   const onSignInPress = (data: any) => {
     console.log(data);
     navigation.navigate('Home');
@@ -70,7 +66,8 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
       <CustomInput
         control={control}
         name="login"
-        inputName="Login"
+        label="Login"
+        placeholder="Login"
         rules={{
           required: 'Login is required',
           minLength: {
@@ -87,7 +84,8 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
       <CustomInput
         control={control}
         name="password"
-        inputName="Password"
+        label="Password"
+        placeholder="Password"
         rules={{
           required: 'Password is required',
           minLength: {

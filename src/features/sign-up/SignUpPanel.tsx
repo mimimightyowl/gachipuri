@@ -1,44 +1,110 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Layout } from '@ui-kitten/components';
+import { IconProps, Layout } from '@ui-kitten/components';
 import { CustomInput } from '../../components/CustomInput';
 import { IAuthPanel } from '../auth/AuthPanel';
 import { CustomButton } from '../../components/CustomButton';
+import { EMAIL_REGEX } from '../../common/config';
+import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
+import { FieldValues, useForm } from 'react-hook-form';
 
 interface ISignUpPanel extends IAuthPanel {}
 
-export const SignUpPanel: React.FC<ISignUpPanel> = ({
-  login,
-  setLogin,
-  password,
-  secureTextEntry,
-  setPassword,
-  renderEyeWardenIcon,
-  navigation,
-}) => {
+export const SignUpPanel: React.FC<ISignUpPanel> = ({ navigation }) => {
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const toggleSecureEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+  const [secureTextEntryRepeated, setSecureTextEntryRepeated] = useState(true);
+
+  const toggleSecureEntryRepeated = () => {
+    setSecureTextEntryRepeated(!secureTextEntryRepeated);
+  };
+
+  const renderEyeWardenIcon = (props: IconProps) => {
+    return (
+      <EyeWardenIcon
+        {...props}
+        onPress={toggleSecureEntry}
+        isSecure={secureTextEntry}
+      />
+    );
+  };
+  const renderEyeWardenIconRepeated = (props: IconProps) => {
+    return (
+      <EyeWardenIcon
+        {...props}
+        onPress={toggleSecureEntryRepeated}
+        isSecure={secureTextEntry}
+      />
+    );
+  };
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+    watch,
+  } = useForm<FieldValues, object>({ mode: 'onChange' });
+
+  const pwd: string = watch('password');
+
+  const onSignUpPress = (data: any) => {
+    console.log(data);
+    navigation.navigate('Auth');
+  };
+
   return (
     <Layout style={styles.container}>
       <CustomInput
-        value={login}
+        control={control}
+        name="login"
         label="Login"
         placeholder="Login"
-        accessoryRight={null}
-        onChangeText={(nextValue: string) => setLogin(nextValue)}
+        rules={{
+          required: 'Login is required',
+          minLength: {
+            value: 3,
+            message: 'Login should be at least 3 characters',
+          },
+          maxLength: {
+            value: 24,
+            message: 'Login should be max 24 characters long',
+          },
+          pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
+        }}
       />
       <CustomInput
-        value={password}
+        control={control}
+        name="password"
         label="Password"
         placeholder="Password"
-        accessoryRight={renderEyeWardenIcon}
+        rules={{
+          required: 'Password is required',
+          minLength: {
+            value: 6,
+            message: 'Password should be at least 6 characters',
+          },
+        }}
         secureTextEntry={secureTextEntry}
-        onChangeText={(nextValue: string) => setPassword(nextValue)}
+        accessoryRight={renderEyeWardenIcon}
+      />
+      <CustomInput
+        control={control}
+        name="password-repeat"
+        label="Password"
+        placeholder="Repeat password"
+        rules={{
+          validate: value => value === pwd || 'Password do not match',
+        }}
+        secureTextEntry={secureTextEntryRepeated}
+        accessoryRight={renderEyeWardenIconRepeated}
       />
       <CustomButton
-        name="Submit"
-        disabled={login && password ? false : true}
-        onPress={() => {
-          login && password && navigation.navigate('Auth');
-        }}
+        name="Sign up"
+        disabled={!isValid}
+        onPress={handleSubmit(onSignUpPress)}
       />
     </Layout>
   );
