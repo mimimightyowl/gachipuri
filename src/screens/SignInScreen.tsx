@@ -11,7 +11,7 @@ import { useTheme } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthPanel } from '../features/auth/AuthPanel';
 
-export const AuthScreen: React.FC = ({ navigation }: any) => {
+export const SignInScreen: React.FC = ({ navigation }: any) => {
   const theme = useTheme();
 
   return (

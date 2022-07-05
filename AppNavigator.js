@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { AuthScreen } from './src/screens/AuthScreen';
+import { SignInScreen } from './src/screens/SignInScreen';
 import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -46,12 +46,12 @@ const TabNavigator = () => (
 );
 
 const StackNavigator = () => (
-  <Stack.Navigator initialRouteName="Auth">
+  <Stack.Navigator initialRouteName="SignInScreen">
     <Stack.Group
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="Auth" component={AuthScreen} />
+      <Stack.Screen name="SignInScreen" component={SignInScreen} />
       <Stack.Screen name="Sign Up" component={SignUpScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
