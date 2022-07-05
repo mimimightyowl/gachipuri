@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { AuthScreen } from './src/screens/Auth';
+import { AuthScreen } from './src/screens/AuthScreen';
 import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,6 +11,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SignUp, SignUpScreen } from './src/screens/SignUpScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,6 +52,7 @@ const StackNavigator = () => (
         headerShown: false,
       }}>
       <Stack.Screen name="Auth" component={AuthScreen} />
+      <Stack.Screen name="Sign Up" component={SignUpScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
     </Stack.Group>

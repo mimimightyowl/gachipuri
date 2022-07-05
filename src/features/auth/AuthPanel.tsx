@@ -1,88 +1,137 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Layout,
-  Button,
   Text,
   StyleService,
   useStyleSheet,
 } from '@ui-kitten/components';
 import { CustomInput } from '../../components/CustomInput';
-import { IconProps } from '../../screens/Auth';
 import { GoogleIcon } from '../../common/icons/GoogleIcon';
 import { FacebookIcon } from '../../common/icons/FacebookIcon';
 import { TwitterIcon } from '../../common/icons/TwitterIcon';
 import { CustomDivider } from '../../components/CustomDivider';
+import { TouchableOpacity } from 'react-native';
+import { CustomButton } from '../../components/CustomButton';
+import { useForm, FieldValues } from 'react-hook-form';
+import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
+import { EMAIL_REGEX } from '../../common/config';
 
-interface IAuthPanel {
-  login: string;
-  setLogin: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  secureTextEntry: boolean;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  renderEyeWardenIcon: (props: IconProps) => JSX.Element;
+export interface IAuthPanel {
   navigation: any;
 }
 
-export const AuthPanel: React.FC<IAuthPanel> = ({
-  login,
-  setLogin,
-  password,
-  secureTextEntry,
-  setPassword,
-  renderEyeWardenIcon,
-  navigation,
-}) => {
+export type IconProps = {
+  style: {
+    height: number;
+    width: number;
+    marginHorizontal: number;
+    tintColor: string;
+  };
+};
+
+export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
   const styles = useStyleSheet(themedStyles);
+
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const toggleSecureEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+  const renderEyeWardenIcon = (props: IconProps) => {
+    return (
+      <EyeWardenIcon
+        {...props}
+        onPress={toggleSecureEntry}
+        isSecure={secureTextEntry}
+      />
+    );
+  };
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FieldValues, object>({ mode: 'onChange' });
+
+  const onSignInPress = (data: any) => {
+    console.log(data);
+    navigation.navigate('Home');
+  };
 
   return (
     <Layout style={styles.container}>
-      <Text style={styles.header} category="h6" status="warning">
-        Choose a restaurant for tonight
+      <Text style={styles.headerText} category="h6" status="warning">
+        Help you with choosing a restaurant for tonight
       </Text>
       <CustomInput
-        value={login}
+        control={control}
+        name="login"
         label="Login"
         placeholder="Login"
-        accessoryRight={null}
-        onChangeText={(nextValue: string) => setLogin(nextValue)}
+        rules={{
+          required: 'Login is required',
+          minLength: {
+            value: 3,
+            message: 'Login should be at least 3 characters',
+          },
+          maxLength: {
+            value: 24,
+            message: 'Login should be max 24 characters long',
+          },
+          pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
+        }}
       />
       <CustomInput
-        value={password}
+        control={control}
+        name="password"
         label="Password"
         placeholder="Password"
-        accessoryRight={renderEyeWardenIcon}
+        rules={{
+          required: 'Password is required',
+          minLength: {
+            value: 6,
+            message: 'Password should be at least 6 characters',
+          },
+        }}
         secureTextEntry={secureTextEntry}
-        onChangeText={(nextValue: string) => setPassword(nextValue)}
+        accessoryRight={renderEyeWardenIcon}
       />
-      <Button
-        disabled={login && password ? false : true}
-        style={styles.button}
-        onPress={login && password ? () => navigation.navigate('Home') : null}>
-        Sign in
-      </Button>
-      <Button style={styles.button} status="warning" accessoryLeft={GoogleIcon}>
-        Continue with Google
-      </Button>
-      <Button
-        style={styles.button}
+      <TouchableOpacity style={styles.restorePassword}>
+        <Text style={styles.restorePasswordText}>Forgot password?</Text>
+      </TouchableOpacity>
+      <CustomButton
+        name="Sign in"
+        disabled={!isValid}
+        onPress={handleSubmit(onSignInPress)}
+      />
+      <CustomButton
+        name="Continue with Google"
         status="warning"
-        accessoryLeft={FacebookIcon}>
-        Continue with Facebook
-      </Button>
-      <Button
-        style={styles.button}
+        accessoryLeft={GoogleIcon}
+        onPress={() => {}}
+      />
+      <CustomButton
+        name="Continue with Facebook"
         status="warning"
-        accessoryLeft={TwitterIcon}>
-        Continue with Twitter
-      </Button>
+        accessoryLeft={FacebookIcon}
+        onPress={() => {}}
+      />
+      <CustomButton
+        name="Continue with Twitter"
+        status="warning"
+        accessoryLeft={TwitterIcon}
+        onPress={() => {}}
+      />
       <Layout style={styles.signUpContainer}>
         <CustomDivider />
         <Text style={styles.suggestionText}>or</Text>
         <CustomDivider />
       </Layout>
-      <Button style={styles.button} status="info">
-        Create Account
-      </Button>
+      <CustomButton
+        name="Create Account"
+        status="info"
+        onPress={() => navigation.navigate('Sign Up')}
+      />
     </Layout>
   );
 };
@@ -93,19 +142,23 @@ const themedStyles = StyleService.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
+  headerText: {
     width: '80%',
     marginTop: '20%',
     marginBottom: 20,
     textAlign: 'center',
   },
-  button: {
-    width: '80%',
-    marginVertical: 10,
-  },
   signUpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  restorePassword: {
+    width: '80%',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  restorePasswordText: {
+    color: 'color-basic-600',
   },
   suggestionText: {
     marginHorizontal: 10,
