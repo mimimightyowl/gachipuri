@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { IconProps, Layout } from '@ui-kitten/components';
 import { CustomInput } from '../../components/CustomInput';
-import { IAuthPanel } from '../auth/AuthPanel';
+import { ISignInPanel } from '../auth/SignInPanel';
 import { CustomButton } from '../../components/CustomButton';
 import { EMAIL_REGEX } from '../../common/config';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { FieldValues, useForm } from 'react-hook-form';
+import { Auth } from 'aws-amplify';
 
-interface ISignUpPanel extends IAuthPanel {}
-
-export const SignUpPanel: React.FC<ISignUpPanel> = ({ navigation }) => {
+export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureEntry = () => {
@@ -50,27 +49,32 @@ export const SignUpPanel: React.FC<ISignUpPanel> = ({ navigation }) => {
 
   const pwd: string = watch('password');
 
-  const onSignUpPress = (data: any) => {
-    console.log(data);
-    navigation.navigate('Auth');
+  const onSignUpPress = async (data: FieldValues): Promise<void> => {
+    const { username, password } = data;
+    try {
+      await Auth.signUp({ username, password });
+      navigation.navigate('Confirm Sign Up', { username });
+    } catch (e: any) {
+      Alert.alert('Oops', e.message);
+    }
   };
 
   return (
     <Layout style={styles.container}>
       <CustomInput
         control={control}
-        name="login"
-        label="Login"
-        placeholder="Login"
+        name="username"
+        label="Username"
+        placeholder="Username"
         rules={{
-          required: 'Login is required',
+          required: 'Username is required',
           minLength: {
             value: 3,
-            message: 'Login should be at least 3 characters',
+            message: 'Username should be at least 3 characters',
           },
           maxLength: {
-            value: 24,
-            message: 'Login should be max 24 characters long',
+            value: 36,
+            message: 'Username should be max 36 characters long',
           },
           pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
         }}

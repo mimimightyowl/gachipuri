@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useTheme } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AuthPanel } from '../features/auth/AuthPanel';
+import { SignInPanel } from '../features/auth/SignInPanel';
 
 export const SignInScreen: React.FC = ({ navigation }: any) => {
   const theme = useTheme();
@@ -25,7 +25,7 @@ export const SignInScreen: React.FC = ({ navigation }: any) => {
         style={styles.keyboardWrapper}>
         <ScrollView>
           <Pressable style={styles.contentWrapper} onPress={Keyboard.dismiss}>
-            <AuthPanel navigation={navigation} />
+            <SignInPanel navigation={navigation} />
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

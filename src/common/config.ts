@@ -4,3 +4,7 @@ export const defaultSafeAreaEdges: Array<string> = ['top', 'left', 'right'];
 
 export const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+export const CONFIRMATION_REGEX = /\d/g;
+
+export const VALIDATION_CODE_LENGTH = 6;
