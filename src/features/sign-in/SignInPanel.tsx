@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Layout,
   Text,
@@ -16,6 +16,7 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { EMAIL_REGEX } from '../../common/config';
 import { Auth } from 'aws-amplify';
+import { useRoute } from '@react-navigation/native';
 
 export interface ISignInPanel {
   navigation: any;
@@ -31,13 +32,18 @@ export type IconProps = {
 };
 
 export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
+  const route = useRoute();
+  console.log({ route });
+  const styles = useStyleSheet(themedStyles);
+
   const {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm<FieldValues, object>({ mode: 'onChange' });
-
-  const styles = useStyleSheet(themedStyles);
+  } = useForm<FieldValues, object>({
+    defaultValues: { email: route?.params?.email },
+    mode: 'onChange',
+  });
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -64,7 +70,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     }
     setLoading(true);
     try {
-      const response = await Auth.signIn(data.Email, data.password);
+      const response = await Auth.signIn(data.email, data.password);
       console.log(response);
     } catch (e: any) {
       Alert.alert('Oops', e.message);
@@ -73,6 +79,8 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
     navigation.navigate('Home');
   };
+
+  useEffect(() => {}, [route]);
 
   return (
     <Layout style={styles.container}>
