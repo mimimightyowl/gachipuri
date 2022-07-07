@@ -10,13 +10,14 @@ import { GoogleIcon } from '../../common/icons/GoogleIcon';
 import { FacebookIcon } from '../../common/icons/FacebookIcon';
 import { TwitterIcon } from '../../common/icons/TwitterIcon';
 import { CustomDivider } from '../../components/CustomDivider';
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import { CustomButton } from '../../components/CustomButton';
 import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { EMAIL_REGEX } from '../../common/config';
+import { Auth } from 'aws-amplify';
 
-export interface IAuthPanel {
+export interface ISignInPanel {
   navigation: any;
 }
 
@@ -29,10 +30,18 @@ export type IconProps = {
   };
 };
 
-export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
+export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FieldValues, object>({ mode: 'onChange' });
+
   const styles = useStyleSheet(themedStyles);
 
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -47,14 +56,21 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
     );
   };
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<FieldValues, object>({ mode: 'onChange' });
+  const onForgotPasswordPress = () => navigation.navigate('Reset Password');
 
-  const onSignInPress = (data: any) => {
-    console.log(data);
+  const onSignInPress = async (data: FieldValues): Promise<void> => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await Auth.signIn(data.username, data.password);
+      console.log(response);
+    } catch (e: any) {
+      Alert.alert('Oops', e.message);
+    }
+    setLoading(false);
+
     navigation.navigate('Home');
   };
 
@@ -65,18 +81,18 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
       </Text>
       <CustomInput
         control={control}
-        name="login"
-        label="Login"
-        placeholder="Login"
+        name="username"
+        label="Username"
+        placeholder="Username"
         rules={{
-          required: 'Login is required',
+          required: 'Username is required',
           minLength: {
             value: 3,
-            message: 'Login should be at least 3 characters',
+            message: 'Username should be at least 3 characters',
           },
           maxLength: {
-            value: 24,
-            message: 'Login should be max 24 characters long',
+            value: 36,
+            message: 'Username should be max 36 characters long',
           },
           pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
         }}
@@ -96,12 +112,14 @@ export const AuthPanel: React.FC<IAuthPanel> = ({ navigation }) => {
         secureTextEntry={secureTextEntry}
         accessoryRight={renderEyeWardenIcon}
       />
-      <TouchableOpacity style={styles.restorePassword}>
+      <TouchableOpacity
+        style={styles.restorePassword}
+        onPress={onForgotPasswordPress}>
         <Text style={styles.restorePasswordText}>Forgot password?</Text>
       </TouchableOpacity>
       <CustomButton
-        name="Sign in"
-        disabled={!isValid}
+        name={!loading ? 'Sign in' : 'Loading...'}
+        disabled={!isValid && !loading}
         onPress={handleSubmit(onSignInPress)}
       />
       <CustomButton

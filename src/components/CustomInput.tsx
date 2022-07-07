@@ -7,12 +7,12 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import { Controller, Control, FieldValues } from 'react-hook-form';
+import { TextInputProps } from 'react-native';
 
-interface ICustomInput {
+interface ICustomInput extends TextInputProps {
   control: Control<FieldValues, any> | undefined;
   name: string;
   label: string;
-  placeholder: string;
   rules?: {
     validate?: (value: string) => boolean | string;
     required?: string;
@@ -30,7 +30,6 @@ interface ICustomInput {
     };
   };
   accessoryRight?: (props: IconProps) => JSX.Element;
-  secureTextEntry?: boolean;
 }
 
 export const CustomInput: React.FC<ICustomInput> = ({
@@ -41,6 +40,9 @@ export const CustomInput: React.FC<ICustomInput> = ({
   rules = {},
   accessoryRight,
   secureTextEntry,
+  keyboardType,
+  returnKeyType,
+  onSubmitEditing,
 }) => {
   const styles = useStyleSheet(themedStyles);
 
@@ -62,6 +64,9 @@ export const CustomInput: React.FC<ICustomInput> = ({
             secureTextEntry={secureTextEntry}
             onBlur={onBlur}
             onChangeText={onChange}
+            keyboardType={keyboardType}
+            returnKeyType={returnKeyType}
+            onSubmitEditing={onSubmitEditing}
           />
           {error && (
             <Text style={styles.validationHint} status="danger">

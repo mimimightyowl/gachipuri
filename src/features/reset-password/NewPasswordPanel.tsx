@@ -1,33 +1,29 @@
 import React, { useState } from 'react';
-import { Alert, TouchableOpacity, StyleSheet } from 'react-native';
-import { Text, IconProps, Layout } from '@ui-kitten/components';
+import { TouchableOpacity, StyleSheet, View, Alert } from 'react-native';
+import { IconProps, Text } from '@ui-kitten/components';
+import {
+  CONFIRMATION_REGEX,
+  EMAIL_REGEX,
+  VALIDATION_CODE_LENGTH,
+} from '../../common/config';
 import { CustomInput } from '../../components/CustomInput';
-import { ISignInPanel } from '../auth/SignInPanel';
-import { CustomButton } from '../../components/CustomButton';
-import { EMAIL_REGEX } from '../../common/config';
-import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { FieldValues, useForm } from 'react-hook-form';
+import { CustomButton } from '../../components/CustomButton';
+import { ISignInPanel } from '../auth/SignInPanel';
+import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { Auth } from 'aws-amplify';
 
-export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
+export const NewPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const {
     control,
     handleSubmit,
     formState: { isValid },
-    watch,
   } = useForm<FieldValues, object>({ mode: 'onChange' });
 
-  const pwd: string = watch('password');
-
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
-  };
-  const [secureTextEntryRepeated, setSecureTextEntryRepeated] = useState(true);
-
-  const toggleSecureEntryRepeated = () => {
-    setSecureTextEntryRepeated(!secureTextEntryRepeated);
   };
 
   const renderEyeWardenIcon = (props: IconProps) => {
@@ -39,21 +35,12 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
       />
     );
   };
-  const renderEyeWardenIconRepeated = (props: IconProps) => {
-    return (
-      <EyeWardenIcon
-        {...props}
-        onPress={toggleSecureEntryRepeated}
-        isSecure={secureTextEntry}
-      />
-    );
-  };
 
-  const onSignUpPress = async (data: FieldValues): Promise<void> => {
-    const { username, password } = data;
+  const onResetPasswordPress = async (data: FieldValues): Promise<void> => {
+    const { username, code, password } = data;
     try {
-      await Auth.signUp({ username, password });
-      navigation.navigate('Confirm Sign Up', { username });
+      await Auth.forgotPasswordSubmit(username, code, password);
+      navigation.navigate('Sign In');
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
@@ -64,7 +51,7 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   };
 
   return (
-    <Layout style={styles.container}>
+    <View style={styles.container}>
       <CustomInput
         control={control}
         name="username"
@@ -85,6 +72,26 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
       />
       <CustomInput
         control={control}
+        name="code"
+        label="Code"
+        placeholder="Enter your confirmation code"
+        onSubmitEditing={handleSubmit(() => {})}
+        returnKeyType="done"
+        keyboardType="number-pad"
+        rules={{
+          required: 'Confirmation code is required',
+          minLength: {
+            value: VALIDATION_CODE_LENGTH,
+            message: `Confirmation code should be ${VALIDATION_CODE_LENGTH} characters`,
+          },
+          pattern: {
+            value: CONFIRMATION_REGEX,
+            message: 'Confirmation code is invalid',
+          },
+        }}
+      />
+      <CustomInput
+        control={control}
         name="password"
         label="Password"
         placeholder="Password"
@@ -98,21 +105,10 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
         secureTextEntry={secureTextEntry}
         accessoryRight={renderEyeWardenIcon}
       />
-      <CustomInput
-        control={control}
-        name="password-repeat"
-        label="Password"
-        placeholder="Repeat password"
-        rules={{
-          validate: value => value === pwd || 'Password do not match',
-        }}
-        secureTextEntry={secureTextEntryRepeated}
-        accessoryRight={renderEyeWardenIconRepeated}
-      />
       <CustomButton
-        name="Sign up"
+        name="Submit"
         disabled={!isValid}
-        onPress={handleSubmit(onSignUpPress)}
+        onPress={handleSubmit(onResetPasswordPress)}
       />
       <TouchableOpacity
         style={styles.returnBackButton}
@@ -121,7 +117,7 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
           Back to Sign In
         </Text>
       </TouchableOpacity>
-    </Layout>
+    </View>
   );
 };
 
@@ -129,7 +125,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   returnBackButton: {
     marginVertical: 10,

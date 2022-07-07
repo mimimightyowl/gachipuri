@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gachipuri-staging-125913-authRole",
+      "UnauthRoleArn": "arn:aws:iam::331194459945:role/amplify-gachipuri-staging-125913-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::331194459945:role/amplify-gachipuri-staging-125913-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gachipuri-staging-125913-deployment",
+      "UnauthRoleName": "amplify-gachipuri-staging-125913-unauthRole",
+      "StackName": "amplify-gachipuri-staging-125913",
+      "StackId": "arn:aws:cloudformation:us-east-1:331194459945:stack/amplify-gachipuri-staging-125913/4560d050-fc62-11ec-8719-12a2d990fc6b",
+      "AmplifyAppId": "d32gwmn7rfslyw"
+    },
+    "categories": {
+      "auth": {
+        "gachipuri": {}
+      }
+    }
+  }
+}
