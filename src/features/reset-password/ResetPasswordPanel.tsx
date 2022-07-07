@@ -5,7 +5,7 @@ import { EMAIL_REGEX } from '../../common/config';
 import { CustomInput } from '../../components/CustomInput';
 import { FieldValues, useForm } from 'react-hook-form';
 import { CustomButton } from '../../components/CustomButton';
-import { ISignInPanel } from '../auth/SignInPanel';
+import { ISignInPanel } from '../sign-in/SignInPanel';
 import { Auth } from 'aws-amplify';
 export const ResetPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const {
@@ -16,7 +16,7 @@ export const ResetPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
   const onSendPress = async (data: FieldValues): Promise<void> => {
     try {
-      await Auth.forgotPassword(data.username);
+      await Auth.forgotPassword(data.email);
       navigation.navigate('New Password');
     } catch (e: any) {
       Alert.alert('Oops', e.message);
@@ -31,18 +31,18 @@ export const ResetPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     <View style={styles.container}>
       <CustomInput
         control={control}
-        name="username"
-        label="Username"
-        placeholder="Username"
+        name="email"
+        label="Email"
+        placeholder="Email"
         rules={{
-          required: 'Username is required',
+          required: 'Email is required',
           minLength: {
             value: 3,
-            message: 'Username should be at least 3 characters',
+            message: 'Email should be at least 3 characters',
           },
           maxLength: {
             value: 36,
-            message: 'Username should be max 36 characters long',
+            message: 'Email should be max 36 characters long',
           },
           pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
         }}

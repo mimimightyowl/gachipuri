@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme, Text } from '@ui-kitten/components';
-import { ISignInPanel } from '../features/auth/SignInPanel';
+import { ISignInPanel } from '../features/sign-in/SignInPanel';
 import { ResetPasswordPanel } from '../features/reset-password/ResetPasswordPanel';
 
 export const ResetPasswordScreen: React.FC<ISignInPanel> = ({ navigation }) => {

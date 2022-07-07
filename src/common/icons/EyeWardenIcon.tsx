@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Icon } from '@ui-kitten/components';
-import { IconProps } from '../../features/auth/SignInPanel';
+import { IconProps } from '../../features/sign-in/SignInPanel';
 
 interface IEyeWardenIcon extends IconProps {
   isSecure: boolean;

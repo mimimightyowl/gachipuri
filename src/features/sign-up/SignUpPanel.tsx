@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text, IconProps, Layout } from '@ui-kitten/components';
 import { CustomInput } from '../../components/CustomInput';
-import { ISignInPanel } from '../auth/SignInPanel';
+import { ISignInPanel } from '../sign-in/SignInPanel';
 import { CustomButton } from '../../components/CustomButton';
 import { EMAIL_REGEX } from '../../common/config';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
@@ -50,10 +50,11 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   };
 
   const onSignUpPress = async (data: FieldValues): Promise<void> => {
-    const { username, password } = data;
+    const { email, password } = data;
+    const username = email;
     try {
       await Auth.signUp({ username, password });
-      navigation.navigate('Confirm Sign Up', { username });
+      navigation.navigate('Confirm Sign Up', { email });
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
@@ -67,18 +68,18 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     <Layout style={styles.container}>
       <CustomInput
         control={control}
-        name="username"
-        label="Username"
-        placeholder="Username"
+        name="email"
+        label="Email"
+        placeholder="Email"
         rules={{
-          required: 'Username is required',
+          required: 'Email is required',
           minLength: {
             value: 3,
-            message: 'Username should be at least 3 characters',
+            message: 'Email should be at least 3 characters',
           },
           maxLength: {
             value: 36,
-            message: 'Username should be max 36 characters long',
+            message: 'Email should be max 36 characters long',
           },
           pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
         }}
