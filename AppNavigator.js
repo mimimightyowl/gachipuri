@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SignInScreen } from './src/screens/SignInScreen';
-import { ForgotPasswordScreen } from './src/screens/ForgotPasswordScreen';
+import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
+import { NewPasswordScreen } from './src/screens/NewPasswordScreen';
 import { ConfirmSignUpScreen } from './src/screens/ConfirmSignUpScreen';
 import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
@@ -48,15 +49,16 @@ const TabNavigator = () => (
 );
 
 const StackNavigator = () => (
-  <Stack.Navigator initialRouteName="Forgot Password">
+  <Stack.Navigator initialRouteName="Sign In">
     <Stack.Group
       screenOptions={{
         headerShown: false,
       }}>
       <Stack.Screen name="Sign In" component={SignInScreen} />
       <Stack.Screen name="Sign Up" component={SignUpScreen} />
-      <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen} />
       <Stack.Screen name="Confirm Sign Up" component={ConfirmSignUpScreen} />
+      <Stack.Screen name="New Password" component={NewPasswordScreen} />
+      <Stack.Screen name="Reset Password" component={ResetPasswordScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
     </Stack.Group>

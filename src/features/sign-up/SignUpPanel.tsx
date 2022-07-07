@@ -10,6 +10,15 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
 
 export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+    watch,
+  } = useForm<FieldValues, object>({ mode: 'onChange' });
+
+  const pwd: string = watch('password');
+
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureEntry = () => {
@@ -39,15 +48,6 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
       />
     );
   };
-
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-    watch,
-  } = useForm<FieldValues, object>({ mode: 'onChange' });
-
-  const pwd: string = watch('password');
 
   const onSignUpPress = async (data: FieldValues): Promise<void> => {
     const { username, password } = data;

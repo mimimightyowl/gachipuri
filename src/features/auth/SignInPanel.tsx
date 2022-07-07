@@ -31,6 +31,12 @@ export type IconProps = {
 };
 
 export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FieldValues, object>({ mode: 'onChange' });
+
   const styles = useStyleSheet(themedStyles);
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,11 +56,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     );
   };
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<FieldValues, object>({ mode: 'onChange' });
+  const onForgotPasswordPress = () => navigation.navigate('Reset Password');
 
   const onSignInPress = async (data: FieldValues): Promise<void> => {
     if (loading) {
@@ -69,7 +71,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     }
     setLoading(false);
 
-    // navigation.navigate('Home');
+    navigation.navigate('Home');
   };
 
   return (
@@ -89,8 +91,8 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
             message: 'Username should be at least 3 characters',
           },
           maxLength: {
-            value: 24,
-            message: 'Username should be max 24 characters long',
+            value: 36,
+            message: 'Username should be max 36 characters long',
           },
           pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
         }}
@@ -110,7 +112,9 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
         secureTextEntry={secureTextEntry}
         accessoryRight={renderEyeWardenIcon}
       />
-      <TouchableOpacity style={styles.restorePassword}>
+      <TouchableOpacity
+        style={styles.restorePassword}
+        onPress={onForgotPasswordPress}>
         <Text style={styles.restorePasswordText}>Forgot password?</Text>
       </TouchableOpacity>
       <CustomButton
