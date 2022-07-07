@@ -1,6 +1,11 @@
 import React from 'react';
-import { Layout, StyleService, useStyleSheet } from '@ui-kitten/components';
-import { Alert } from 'react-native';
+import {
+  Text,
+  Layout,
+  StyleService,
+  useStyleSheet,
+} from '@ui-kitten/components';
+import { Alert, TouchableOpacity } from 'react-native';
 import {
   CONFIRMATION_REGEX,
   EMAIL_REGEX,
@@ -49,6 +54,10 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
     }
   };
 
+  const onBackToSignInPress = () => {
+    navigation.navigate('Sign In');
+  };
+
   return (
     <Layout style={styles.container}>
       <CustomInput
@@ -95,6 +104,13 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
         onPress={handleSubmit(onSubmitEditing)}
       />
       <CustomButton name="Resend code" onPress={handleSubmit(onResendCode)} />
+      <TouchableOpacity
+        style={styles.returnBackButton}
+        onPress={onBackToSignInPress}>
+        <Text style={styles.returnBackText} appearance="hint">
+          Back to Sign In
+        </Text>
+      </TouchableOpacity>
     </Layout>
   );
 };
@@ -104,5 +120,11 @@ const themedStyles = StyleService.create({
     flex: 1,
     marginTop: 50,
     alignItems: 'center',
+  },
+  returnBackButton: {
+    marginVertical: 10,
+  },
+  returnBackText: {
+    textAlign: 'center',
   },
 });

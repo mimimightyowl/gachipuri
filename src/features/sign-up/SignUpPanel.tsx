@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
-import { IconProps, Layout } from '@ui-kitten/components';
+import { Alert, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, IconProps, Layout } from '@ui-kitten/components';
 import { CustomInput } from '../../components/CustomInput';
 import { ISignInPanel } from '../auth/SignInPanel';
 import { CustomButton } from '../../components/CustomButton';
@@ -59,6 +59,10 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     }
   };
 
+  const onBackToSignInPress = () => {
+    navigation.navigate('Sign In');
+  };
+
   return (
     <Layout style={styles.container}>
       <CustomInput
@@ -110,6 +114,13 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
         disabled={!isValid}
         onPress={handleSubmit(onSignUpPress)}
       />
+      <TouchableOpacity
+        style={styles.returnBackButton}
+        onPress={onBackToSignInPress}>
+        <Text style={styles.returnBackText} appearance="hint">
+          Back to Sign In
+        </Text>
+      </TouchableOpacity>
     </Layout>
   );
 };
@@ -119,5 +130,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  returnBackButton: {
+    marginVertical: 10,
+  },
+  returnBackText: {
+    textAlign: 'center',
   },
 });
