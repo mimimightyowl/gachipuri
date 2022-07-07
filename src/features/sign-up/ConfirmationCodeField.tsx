@@ -22,6 +22,7 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
   navigation,
 }) => {
   const route = useRoute();
+
   const styles = useStyleSheet(themedStyles);
 
   const {
