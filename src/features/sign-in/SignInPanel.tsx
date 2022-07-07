@@ -68,10 +68,11 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     if (loading) {
       return;
     }
+
     setLoading(true);
+
     try {
-      const response = await Auth.signIn(data.email, data.password);
-      console.log(response);
+      await Auth.signIn(data.email, data.password);
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
