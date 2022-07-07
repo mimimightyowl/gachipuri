@@ -14,7 +14,7 @@ import {
 import { useForm, FieldValues } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
 import { CustomInput } from '../../components/CustomInput';
-import { ISignInPanel } from '../auth/SignInPanel';
+import { ISignInPanel } from '../sign-in/SignInPanel';
 import { useRoute } from '@react-navigation/native';
 import { CustomButton } from '../../components/CustomButton';
 
@@ -30,16 +30,16 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
     formState: { isValid },
     watch,
   } = useForm<FieldValues, object>({
-    defaultValues: { username: route?.params?.username },
+    defaultValues: { email: route?.params?.email },
     mode: 'onChange',
   });
 
-  const username: string = watch('username');
+  const email: string = watch('email');
 
   const onSubmitEditing = async (data: FieldValues): Promise<void> => {
     try {
-      await Auth.confirmSignUp(data.username, data.code);
-      navigation.navigate('Sign In');
+      await Auth.confirmSignUp(data.email, data.code);
+      navigation.navigate('Sign In', { email });
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
@@ -47,7 +47,7 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
 
   const onResendCode = async (): Promise<void> => {
     try {
-      await Auth.resendSignUp(username);
+      await Auth.resendSignUp(email);
       Alert.alert('Success', 'Code was resent to your email');
     } catch (e: any) {
       Alert.alert('Oops', e.message);
@@ -62,18 +62,18 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
     <Layout style={styles.container}>
       <CustomInput
         control={control}
-        name="username"
-        label="Username"
-        placeholder="Username"
+        name="email"
+        label="Email"
+        placeholder="Email"
         rules={{
-          required: 'Username is required',
+          required: 'Email is required',
           minLength: {
             value: 3,
-            message: 'Username should be at least 3 characters',
+            message: 'Email should be at least 3 characters',
           },
           maxLength: {
             value: 36,
-            message: 'Username should be max 36 characters long',
+            message: 'Email should be max 36 characters long',
           },
           pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
         }}

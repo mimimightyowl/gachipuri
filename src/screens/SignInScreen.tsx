@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useTheme } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { SignInPanel } from '../features/auth/SignInPanel';
+import { SignInPanel } from '../features/sign-in/SignInPanel';
 
 export const SignInScreen: React.FC = ({ navigation }: any) => {
   const theme = useTheme();

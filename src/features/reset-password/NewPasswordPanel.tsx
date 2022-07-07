@@ -9,7 +9,7 @@ import {
 import { CustomInput } from '../../components/CustomInput';
 import { FieldValues, useForm } from 'react-hook-form';
 import { CustomButton } from '../../components/CustomButton';
-import { ISignInPanel } from '../auth/SignInPanel';
+import { ISignInPanel } from '../sign-in/SignInPanel';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { Auth } from 'aws-amplify';
 
@@ -37,9 +37,9 @@ export const NewPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   };
 
   const onResetPasswordPress = async (data: FieldValues): Promise<void> => {
-    const { username, code, password } = data;
+    const { email, code, password } = data;
     try {
-      await Auth.forgotPasswordSubmit(username, code, password);
+      await Auth.forgotPasswordSubmit(email, code, password);
       navigation.navigate('Sign In');
     } catch (e: any) {
       Alert.alert('Oops', e.message);
@@ -54,18 +54,18 @@ export const NewPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     <View style={styles.container}>
       <CustomInput
         control={control}
-        name="username"
-        label="Username"
-        placeholder="Username"
+        name="email"
+        label="Email"
+        placeholder="Email"
         rules={{
-          required: 'Username is required',
+          required: 'Email is required',
           minLength: {
             value: 3,
-            message: 'Username should be at least 3 characters',
+            message: 'Email should be at least 3 characters',
           },
           maxLength: {
             value: 36,
-            message: 'Username should be max 36 characters long',
+            message: 'Email should be max 36 characters long',
           },
           pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
         }}

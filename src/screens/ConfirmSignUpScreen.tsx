@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme, Text } from '@ui-kitten/components';
 import { ConfirmationCodeField } from '../features/sign-up/ConfirmationCodeField';
-import { ISignInPanel } from '../features/auth/SignInPanel';
+import { ISignInPanel } from '../features/sign-in/SignInPanel';
 
 export const ConfirmSignUpScreen: React.FC<ISignInPanel> = ({ navigation }) => {
   const theme = useTheme();
