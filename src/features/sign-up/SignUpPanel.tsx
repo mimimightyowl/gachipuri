@@ -4,7 +4,7 @@ import { Text, IconProps, Layout } from '@ui-kitten/components';
 import { CustomInput } from '../../components/CustomInput';
 import { ISignInPanel } from '../sign-in/SignInPanel';
 import { CustomButton } from '../../components/CustomButton';
-import { EMAIL_REGEX } from '../../common/config';
+import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
@@ -94,6 +94,11 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
           minLength: {
             value: 6,
             message: 'Password should be at least 6 characters',
+          },
+          pattern: {
+            value: PASSWORD_REGEX,
+            message:
+              'Must contain digit, lower & uppercase letters, special character',
           },
         }}
         secureTextEntry={secureTextEntry}

@@ -14,7 +14,7 @@ import { Alert, TouchableOpacity } from 'react-native';
 import { CustomButton } from '../../components/CustomButton';
 import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
-import { EMAIL_REGEX } from '../../common/config';
+import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
 import { Auth } from 'aws-amplify';
 import { useRoute } from '@react-navigation/native';
 
@@ -33,7 +33,7 @@ export type IconProps = {
 
 export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const route = useRoute();
-  console.log({ route });
+
   const styles = useStyleSheet(themedStyles);
 
   const {
@@ -68,10 +68,11 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     if (loading) {
       return;
     }
+
     setLoading(true);
+
     try {
-      const response = await Auth.signIn(data.email, data.password);
-      console.log(response);
+      await Auth.signIn(data.email, data.password);
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
@@ -115,6 +116,11 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
           minLength: {
             value: 6,
             message: 'Password should be at least 6 characters',
+          },
+          pattern: {
+            value: PASSWORD_REGEX,
+            message:
+              'Must contain digit, lower & uppercase letters, special character',
           },
         }}
         secureTextEntry={secureTextEntry}

@@ -4,6 +4,7 @@ import { IconProps, Text } from '@ui-kitten/components';
 import {
   CONFIRMATION_REGEX,
   EMAIL_REGEX,
+  PASSWORD_REGEX,
   VALIDATION_CODE_LENGTH,
 } from '../../common/config';
 import { CustomInput } from '../../components/CustomInput';
@@ -100,6 +101,11 @@ export const NewPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
           minLength: {
             value: 6,
             message: 'Password should be at least 6 characters',
+          },
+          pattern: {
+            value: PASSWORD_REGEX,
+            message:
+              'Must contain digit, lower & uppercase letters, special character',
           },
         }}
         secureTextEntry={secureTextEntry}
