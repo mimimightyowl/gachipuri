@@ -1,3 +1,10 @@
+import { Platform } from 'react-native';
+
+export const isAndroid = Platform.OS === 'android';
+
+export const androidKeyboardVerticalOffset = 30;
+export const iOSKeyboardVerticalOffset = 0;
+
 export const baseUrl: string = 'http://localhost:3000/users';
 
 export const defaultSafeAreaEdges: Array<string> = ['top', 'left', 'right'];
