@@ -40,7 +40,7 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
   const onSubmitEditing = async (data: FieldValues): Promise<void> => {
     try {
       await Auth.confirmSignUp(data.email, data.code);
-      navigation.navigate('Sign In', { email });
+      navigation.navigate('SignIn', { email });
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
@@ -56,7 +56,7 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
   };
 
   const onBackToSignInPress = () => {
-    navigation.navigate('Sign In');
+    navigation.navigate('SignIn');
   };
 
   return (

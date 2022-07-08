@@ -62,7 +62,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     );
   };
 
-  const onForgotPasswordPress = () => navigation.navigate('Reset Password');
+  const onForgotPasswordPress = () => navigation.navigate('ResetPassword');
 
   const onSignInPress = async (data: FieldValues): Promise<void> => {
     if (loading) {
@@ -80,6 +80,8 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
     navigation.navigate('Home');
   };
+
+  const onSignUpPress = () => navigation.navigate('SignUp');
 
   useEffect(() => {}, [route]);
 
@@ -162,7 +164,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
       <CustomButton
         name="Create Account"
         status="info"
-        onPress={() => navigation.navigate('Sign Up')}
+        onPress={onSignUpPress}
       />
     </Layout>
   );

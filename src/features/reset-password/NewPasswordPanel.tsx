@@ -41,14 +41,14 @@ export const NewPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     const { email, code, password } = data;
     try {
       await Auth.forgotPasswordSubmit(email, code, password);
-      navigation.navigate('Sign In');
+      navigation.navigate('SignIn');
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
   };
 
   const onBackToSignInPress = () => {
-    navigation.navigate('Sign In');
+    navigation.navigate('SignIn');
   };
 
   return (

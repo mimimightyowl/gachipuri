@@ -4,6 +4,7 @@ import { defaultSafeAreaEdges } from '../common/config';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Layout, Text } from '@ui-kitten/components';
 import { View } from 'react-native';
+import { Auth } from 'aws-amplify';
 
 export const HomeScreen = ({ navigation }) => {
   const navigateDetails = () => {
@@ -18,6 +19,8 @@ export const HomeScreen = ({ navigation }) => {
 
   const query = useQuery('todos', getTodos);
 
+  const onSignOutPress = () => Auth.signOut();
+
   return (
     <SafeAreaView style={{ flex: 1 }} edges={defaultSafeAreaEdges}>
       <Layout
@@ -27,6 +30,7 @@ export const HomeScreen = ({ navigation }) => {
             query.data.map(todo => <Text key={todo.id}>{todo.title}</Text>)}
         </View>
         <Button onPress={navigateDetails}>OPEN DETAILS</Button>
+        <Button onPress={onSignOutPress}>Sign Out</Button>
       </Layout>
     </SafeAreaView>
   );
