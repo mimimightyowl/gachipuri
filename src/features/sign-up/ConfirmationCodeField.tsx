@@ -47,6 +47,7 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
   };
 
   const onResendCode = async (): Promise<void> => {
+    console.log({ email });
     try {
       await Auth.resendSignUp(email);
       Alert.alert('Success', 'Code was resent to your email');
@@ -104,7 +105,7 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
         disabled={!isValid}
         onPress={handleSubmit(onSubmitEditing)}
       />
-      <CustomButton name="Resend code" onPress={handleSubmit(onResendCode)} />
+      <CustomButton name="Resend code" onPress={onResendCode} />
       <TouchableOpacity
         style={styles.returnBackButton}
         onPress={onBackToSignInPress}>
