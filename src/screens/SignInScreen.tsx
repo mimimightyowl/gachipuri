@@ -10,6 +10,11 @@ import {
 import { useTheme } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SignInPanel } from '../features/sign-in/SignInPanel';
+import {
+  androidKeyboardVerticalOffset,
+  iOSKeyboardVerticalOffset,
+  isAndroid,
+} from '../common/config';
 
 export const SignInScreen: React.FC = ({ navigation }: any) => {
   const theme = useTheme();
@@ -22,6 +27,9 @@ export const SignInScreen: React.FC = ({ navigation }: any) => {
       ]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={
+          isAndroid ? androidKeyboardVerticalOffset : iOSKeyboardVerticalOffset
+        }
         style={styles.keyboardWrapper}>
         <ScrollView>
           <Pressable style={styles.contentWrapper} onPress={Keyboard.dismiss}>
