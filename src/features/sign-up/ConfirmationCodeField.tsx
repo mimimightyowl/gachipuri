@@ -47,7 +47,6 @@ export const ConfirmationCodeField: React.FC<ISignInPanel> = ({
   };
 
   const onResendCode = async (): Promise<void> => {
-    console.log({ email });
     try {
       await Auth.resendSignUp(email);
       Alert.alert('Success', 'Code was resent to your email');
