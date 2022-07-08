@@ -13,7 +13,6 @@ Amplify.configure(awsconfig);
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Auth.signOut()
   useEffect(() => {
     SplashScreen.hide();
   }, []);

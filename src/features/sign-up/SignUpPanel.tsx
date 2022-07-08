@@ -54,14 +54,14 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     const username = email;
     try {
       await Auth.signUp({ username, password });
-      navigation.navigate('Confirm Sign Up', { email });
+      navigation.navigate('ConfirmSignUp', { email });
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
   };
 
   const onBackToSignInPress = () => {
-    navigation.navigate('Sign In');
+    navigation.navigate('SignIn');
   };
 
   return (

@@ -17,14 +17,14 @@ export const ResetPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const onSendPress = async (data: FieldValues): Promise<void> => {
     try {
       await Auth.forgotPassword(data.email);
-      navigation.navigate('New Password');
+      navigation.navigate('NewPassword');
     } catch (e: any) {
       Alert.alert('Oops', e.message);
     }
   };
 
   const onBackToSignInPress = () => {
-    navigation.navigate('Sign In');
+    navigation.navigate('SignIn');
   };
 
   return (
