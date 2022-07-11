@@ -1,55 +1,11 @@
 import React from 'react';
-import {
-  ScrollView,
-  Pressable,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Platform,
-  Keyboard,
-} from 'react-native';
-import { useTheme } from '@ui-kitten/components';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenWrapper } from '../components/ScreenWrapper';
 import { SignInPanel } from '../features/sign-in/SignInPanel';
-import {
-  androidKeyboardVerticalOffset,
-  iOSKeyboardVerticalOffset,
-  isAndroid,
-} from '../common/config';
 
 export const SignInScreen: React.FC = ({ navigation }: any) => {
-  const theme = useTheme();
-
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        { backgroundColor: theme['background-basic-color-1'] },
-      ]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={
-          isAndroid ? androidKeyboardVerticalOffset : iOSKeyboardVerticalOffset
-        }
-        style={styles.keyboardWrapper}>
-        <ScrollView>
-          <Pressable style={styles.contentWrapper} onPress={Keyboard.dismiss}>
-            <SignInPanel navigation={navigation} />
-          </Pressable>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <ScreenWrapper>
+      <SignInPanel navigation={navigation} />
+    </ScreenWrapper>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  keyboardWrapper: {
-    flex: 1,
-  },
-  contentWrapper: {
-    flex: 1,
-    height: '100%',
-  },
-});
