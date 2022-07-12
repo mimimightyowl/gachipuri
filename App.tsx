@@ -9,6 +9,9 @@ import SplashScreen from 'react-native-splash-screen';
 import { Amplify } from 'aws-amplify';
 import awsconfig from './src/aws-exports';
 Amplify.configure(awsconfig);
+import { GoogleAuthProvider } from 'firebase/auth';
+
+export const provider = new GoogleAuthProvider();
 
 const queryClient = new QueryClient();
 
