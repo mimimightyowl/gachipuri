@@ -15,8 +15,9 @@ import { CustomButton } from '../../components/CustomButton';
 import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
-import { Auth } from 'aws-amplify';
 import { useRoute } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../firebase/firebase-config';
 
 export interface ISignInPanel {
   navigation: any;
@@ -65,20 +66,18 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const onForgotPasswordPress = () => navigation.navigate('ResetPassword');
 
   const onSignInPress = async (data: FieldValues): Promise<void> => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      await Auth.signIn(data.email, data.password);
-    } catch (e: any) {
-      Alert.alert('Oops', e.message);
-    }
-    setLoading(false);
-
-    navigation.navigate('Home');
+    const { email, password } = data;
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        // Signed in
+        const user = userCredential.user;
+        console.log({ user });
+      })
+      .catch(error => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert(`Error code: ${errorCode}`, errorMessage);
+      });
   };
 
   const onSignUpPress = () => navigation.navigate('SignUp');

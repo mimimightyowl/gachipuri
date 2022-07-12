@@ -7,7 +7,8 @@ import { CustomButton } from '../../components/CustomButton';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Auth } from 'aws-amplify';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../firebase/firebase-config';
 
 export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const {
@@ -30,6 +31,21 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
     setSecureTextEntryRepeated(!secureTextEntryRepeated);
   };
 
+  const onSignUpPress = async (data: FieldValues): Promise<void> => {
+    const { email, password } = data;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        // Signed in
+        const user = userCredential.user;
+        console.log({ user });
+      })
+      .catch(error => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert(`Error code: ${errorCode}`, errorMessage);
+      });
+  };
+
   const renderEyeWardenIcon = (props: IconProps) => {
     return (
       <EyeWardenIcon
@@ -47,17 +63,6 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
         isSecure={secureTextEntry}
       />
     );
-  };
-
-  const onSignUpPress = async (data: FieldValues): Promise<void> => {
-    const { email, password } = data;
-    const username = email;
-    try {
-      await Auth.signUp({ username, password });
-      navigation.navigate('ConfirmSignUp', { email });
-    } catch (e: any) {
-      Alert.alert('Oops', e.message);
-    }
   };
 
   const onBackToSignInPress = () => {
