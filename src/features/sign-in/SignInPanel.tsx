@@ -67,17 +67,29 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
   const onSignInPress = async (data: FieldValues): Promise<void> => {
     const { email, password } = data;
+
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
+
+        setLoading(false);
         console.log({ user });
       })
       .catch(error => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setLoading(false);
         Alert.alert(`Error code: ${errorCode}`, errorMessage);
       });
+
+    navigation.navigate('Home');
   };
 
   const onSignUpPress = () => navigation.navigate('SignUp');

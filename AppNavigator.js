@@ -9,40 +9,32 @@ import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SignUpScreen } from './src/screens/SignUpScreen';
-import { Auth, Hub } from 'aws-amplify';
+import { auth } from './firebase/firebase-config';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-  const [user, setUser] = useState(undefined);
-
-  const checkUserAuthorized = async () => {
-    try {
-      const authUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
-      setUser(authUser);
-    } catch (e) {
-      setUser(null);
-    }
-  };
+  const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
-    checkUserAuthorized();
-  }, []);
-
-  useEffect(() => {
-    const authListener = data => {
-      if (data.payload.event === 'signIn' || data.payload.event === 'signOut') {
-        checkUserAuthorized();
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        setCurrentUser(user);
+        // ...
+      } else {
+        // User is signed out
+        setCurrentUser(null)
+        // ...
       }
-    };
-    Hub.listen('auth', authListener);
+    });
+    console.log({ currentUser });
+  }, [currentUser]);
 
-    return () => Hub.remove('auth', authListener);
-  }, []);
-
-  if (user === undefined) {
+  if (currentUser === undefined) {
     return <LoadingScreen />;
   }
 
@@ -52,7 +44,7 @@ const StackNavigator = () => {
         headerShown: false,
       }}
       initialRouteName="Home">
-      {user ? (
+      {currentUser ? (
         <Stack.Group>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Details" component={DetailsScreen} />
