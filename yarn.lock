@@ -3776,6 +3776,16 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
+"@react-native-firebase/auth@^15.1.1":
+  version "15.1.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-15.1.1.tgz#91d771765d41db006663ea1d26e161cfdfd8c400"
+  integrity sha512-b58A4TbogTS56jmXyJ0b752Yuwa3ipH3otrgktyM+qdbyF7vHYnB4Db2byp82//9CP7+xwa8pcXRJptXe2Ujlw==
+
+"@react-native-google-signin/google-signin@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-8.0.0.tgz#f8202c121b4df185eb165dc58b35544c643af25f"
+  integrity sha512-GV0EGXUfiqk9Kav74zOq4ww0rAhMUlwmIGEf94X2ptnxfKu9TufeTig1zuDQGasgFlziWju/Ya2WeC+7TYSbxw==
+
 "@react-native-picker/picker@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.4.2.tgz#2925eb8e76ff6b584c80529adc251df963be9141"
