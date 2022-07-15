@@ -16,8 +16,8 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
 import { useRoute } from '@react-navigation/native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../firebase/firebase-config';
+import auth from '@react-native-firebase/auth';
+import { onGoogleButtonPress } from '../../services/SocialAuth/GoogleAuth';
 
 export interface ISignInPanel {
   navigation: any;
@@ -74,19 +74,25 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
     setLoading(true);
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(signIn => {
         // Signed in
-        const user = userCredential.user;
+        // const user = userCredential.user;
 
         setLoading(false);
-        console.log({ user });
+        console.log({ signIn });
       })
       .catch(error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        if (error.code === 'auth/email-already-in-use') {
+          Alert.alert('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          Alert.alert('That email address is invalid!');
+        }
+
         setLoading(false);
-        Alert.alert(`Error code: ${errorCode}`, errorMessage);
       });
 
     navigation.navigate('Home');
@@ -153,7 +159,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
         name="Continue with Google"
         status="warning"
         accessoryLeft={GoogleIcon}
-        onPress={() => {}}
+        onPress={onGoogleButtonPress}
       />
       <CustomButton
         name="Continue with Facebook"

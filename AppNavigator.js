@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SignInScreen } from './src/screens/SignInScreen';
 import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
@@ -9,32 +9,38 @@ import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SignUpScreen } from './src/screens/SignUpScreen';
-import { auth } from './firebase/firebase-config';
-import { onAuthStateChanged } from 'firebase/auth';
+import auth from '@react-native-firebase/auth';
+import { googleConfig } from './firebase/firebase-config';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-  const [currentUser, setCurrentUser] = useState(undefined);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  const onAuthStateChanged = useCallback(
+    user => {
+      googleConfig();
+      setUser(user);
+
+      if (initializing) {
+        setInitializing(false);
+      }
+    },
+    [initializing],
+  );
 
   useEffect(() => {
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        setCurrentUser(user);
-        // ...
-      } else {
-        // User is signed out
-        setCurrentUser(null)
-        // ...
-      }
-    });
-    console.log({ currentUser });
-  }, [currentUser]);
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 
-  if (currentUser === undefined) {
+    return subscriber;
+  }, [onAuthStateChanged]);
+
+  if (initializing) {
+    return null;
+  }
+
+  if (user === undefined) {
     return <LoadingScreen />;
   }
 
@@ -44,7 +50,7 @@ const StackNavigator = () => {
         headerShown: false,
       }}
       initialRouteName="Home">
-      {currentUser ? (
+      {user ? (
         <Stack.Group>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Details" component={DetailsScreen} />
