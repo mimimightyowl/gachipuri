@@ -1,10 +1,7 @@
-// Import the functions you need from the SDKs you need
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyDyv9QJg7Hfm_aWijLk1HlCvXof2jjaLbw',
   authDomain: 'gachipuri-33316.firebaseapp.com',
@@ -17,7 +14,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(app);
+export const authentication = getAuth(app);
 
-export const currentUser = auth.currentUser;
+export const googleConfig = () => {
+  GoogleSignin.configure({
+    webClientId:
+      '928330599825-6oka31ji83aphgmcbga85qt1mkh41000.apps.googleusercontent.com',
+  });
+};

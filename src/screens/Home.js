@@ -4,8 +4,8 @@ import { defaultSafeAreaEdges } from '../common/config';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Layout, Text } from '@ui-kitten/components';
 import { Alert, View } from 'react-native';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase/firebase-config';
+import auth from '@react-native-firebase/auth';
+import { authentication } from '../../firebase/firebase-config';
 
 export const HomeScreen = ({ navigation }) => {
   const navigateDetails = () => {
@@ -21,12 +21,13 @@ export const HomeScreen = ({ navigation }) => {
   const query = useQuery('todos', getTodos);
 
   const onSignOutPress = () =>
-    signOut(auth)
+    auth()
+      .signOut(authentication)
       .then(() => {
         Alert.alert('Sign-out successful.');
       })
       .catch(error => {
-        Alert.alert('An error happened.', error);
+        Alert.alert('An error happened.', error.message);
       });
 
   return (

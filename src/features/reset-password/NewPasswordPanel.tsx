@@ -12,7 +12,6 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { CustomButton } from '../../components/CustomButton';
 import { ISignInPanel } from '../sign-in/SignInPanel';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
-import { Auth } from 'aws-amplify';
 
 export const NewPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const {

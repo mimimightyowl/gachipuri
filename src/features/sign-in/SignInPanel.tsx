@@ -16,9 +16,8 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
 import { useRoute } from '@react-navigation/native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../firebase/firebase-config';
-
+import { onGoogleButtonPress } from '../../services/SocialAuth/GoogleAuth';
+import auth from '@react-native-firebase/auth';
 export interface ISignInPanel {
   navigation: any;
 }
@@ -74,25 +73,23 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
     setLoading(true);
 
-    signInWithEmailAndPassword(auth, email, password)
+    auth()
+      .signInWithEmailAndPassword(email, password)
       .then(userCredential => {
-        // Signed in
         const user = userCredential.user;
 
         setLoading(false);
-        console.log({ user });
       })
       .catch(error => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setLoading(false);
-        Alert.alert(`Error code: ${errorCode}`, errorMessage);
-      });
+        Alert.alert(errorCode, errorMessage);
 
-    navigation.navigate('Home');
+        setLoading(false);
+      });
   };
 
-  const onSignUpPress = () => navigation.navigate('SignUp');
+  const onCreateAccountPress = () => navigation.navigate('SignUp');
 
   useEffect(() => {}, [route]);
 
@@ -153,7 +150,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
         name="Continue with Google"
         status="warning"
         accessoryLeft={GoogleIcon}
-        onPress={() => {}}
+        onPress={onGoogleButtonPress}
       />
       <CustomButton
         name="Continue with Facebook"
@@ -175,7 +172,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
       <CustomButton
         name="Create Account"
         status="info"
-        onPress={onSignUpPress}
+        onPress={onCreateAccountPress}
       />
     </Layout>
   );
