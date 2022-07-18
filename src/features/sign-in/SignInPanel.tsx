@@ -16,9 +16,8 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
 import { useRoute } from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
 import { onGoogleButtonPress } from '../../services/SocialAuth/GoogleAuth';
-
+import auth from '@react-native-firebase/auth';
 export interface ISignInPanel {
   navigation: any;
 }
@@ -76,29 +75,21 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
     auth()
       .signInWithEmailAndPassword(email, password)
-      .then(signIn => {
-        // Signed in
-        // const user = userCredential.user;
+      .then(userCredential => {
+        const user = userCredential.user;
 
         setLoading(false);
-        console.log({ signIn });
       })
       .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          Alert.alert('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          Alert.alert('That email address is invalid!');
-        }
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert(errorCode, errorMessage);
 
         setLoading(false);
       });
-
-    navigation.navigate('Home');
   };
 
-  const onSignUpPress = () => navigation.navigate('SignUp');
+  const onCreateAccountPress = () => navigation.navigate('SignUp');
 
   useEffect(() => {}, [route]);
 
@@ -181,7 +172,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
       <CustomButton
         name="Create Account"
         status="info"
-        onPress={onSignUpPress}
+        onPress={onCreateAccountPress}
       />
     </Layout>
   );

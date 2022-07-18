@@ -8,7 +8,7 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { FieldValues, useForm } from 'react-hook-form';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../firebase/firebase-config';
+import { authentication } from '../../../firebase/firebase-config';
 
 export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const {
@@ -33,11 +33,11 @@ export const SignUpPanel: React.FC<ISignInPanel> = ({ navigation }) => {
 
   const onSignUpPress = async (data: FieldValues): Promise<void> => {
     const { email, password } = data;
-    createUserWithEmailAndPassword(auth, email, password)
+
+    createUserWithEmailAndPassword(authentication, email, password)
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
-        console.log({ user });
       })
       .catch(error => {
         const errorCode = error.code;
