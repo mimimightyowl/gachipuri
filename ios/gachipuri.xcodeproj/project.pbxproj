@@ -163,6 +163,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
+				D46C65D7F3A9C609B28C07D2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -186,6 +187,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E15B4B388D34A55B37160DCA /* [CP-User] [RNFB] Core Configuration */,
+				2CBE2999B71F48B38400BDDF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -284,6 +286,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gachipuri/Pods-gachipuri-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		2CBE2999B71F48B38400BDDF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-gachipuri/Pods-gachipuri-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-gachipuri/Pods-gachipuri-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gachipuri/Pods-gachipuri-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -343,6 +362,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gachipuri-gachipuriTests/Pods-gachipuri-gachipuriTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D46C65D7F3A9C609B28C07D2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-gachipuri-gachipuriTests/Pods-gachipuri-gachipuriTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-gachipuri-gachipuriTests/Pods-gachipuri-gachipuriTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gachipuri-gachipuriTests/Pods-gachipuri-gachipuriTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E15B4B388D34A55B37160DCA /* [CP-User] [RNFB] Core Configuration */ = {
