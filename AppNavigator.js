@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SignInScreen } from './src/screens/SignInScreen';
 import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
 import { NewPasswordScreen } from './src/screens/NewPasswordScreen';
-import { ConfirmSignUpScreen } from './src/screens/ConfirmSignUpScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
@@ -59,7 +58,6 @@ const StackNavigator = () => {
         <Stack.Group>
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="ConfirmSignUp" component={ConfirmSignUpScreen} />
           <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
           <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         </Stack.Group>
