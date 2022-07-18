@@ -6,7 +6,6 @@ import { CustomInput } from '../../components/CustomInput';
 import { FieldValues, useForm } from 'react-hook-form';
 import { CustomButton } from '../../components/CustomButton';
 import { ISignInPanel } from '../sign-in/SignInPanel';
-import { Auth } from 'aws-amplify';
 export const ResetPasswordPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const {
     control,
