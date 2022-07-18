@@ -6,9 +6,6 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { AppNavigator } from './AppNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
-import { Amplify } from 'aws-amplify';
-import awsconfig from './src/aws-exports';
-Amplify.configure(awsconfig);
 
 const queryClient = new QueryClient();
 

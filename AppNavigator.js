@@ -1,46 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SignInScreen } from './src/screens/SignInScreen';
 import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
 import { NewPasswordScreen } from './src/screens/NewPasswordScreen';
-import { ConfirmSignUpScreen } from './src/screens/ConfirmSignUpScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
 import { HomeScreen } from './src/screens/Home';
 import { DetailsScreen } from './src/screens/Details';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SignUpScreen } from './src/screens/SignUpScreen';
-import { Auth, Hub } from 'aws-amplify';
+import auth from '@react-native-firebase/auth';
+import { googleConfig } from './firebase/firebase-config';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-  const [user, setUser] = useState(undefined);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
 
-  const checkUserAuthorized = async () => {
-    try {
-      const authUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
-      setUser(authUser);
-    } catch (e) {
-      setUser(null);
-    }
-  };
+  const onAuthStateChanged = useCallback(
+    user => {
+      googleConfig();
+      setUser(user);
 
-  useEffect(() => {
-    checkUserAuthorized();
-  }, []);
-
-  useEffect(() => {
-    const authListener = data => {
-      if (data.payload.event === 'signIn' || data.payload.event === 'signOut') {
-        checkUserAuthorized();
+      if (initializing) {
+        setInitializing(false);
       }
-    };
-    Hub.listen('auth', authListener);
+    },
+    [initializing],
+  );
 
-    return () => Hub.remove('auth', authListener);
-  }, []);
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+
+    return subscriber;
+  }, [onAuthStateChanged]);
+
+  if (initializing) {
+    return null;
+  }
 
   if (user === undefined) {
     return <LoadingScreen />;
@@ -61,7 +58,6 @@ const StackNavigator = () => {
         <Stack.Group>
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="ConfirmSignUp" component={ConfirmSignUpScreen} />
           <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
           <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         </Stack.Group>

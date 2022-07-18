@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "928330599825",
+    "project_id": "gachipuri-33316",
+    "storage_bucket": "gachipuri-33316.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928330599825:android:96aa7d7dfe8bcdf85e9e30",
+        "android_client_info": {
+          "package_name": "com.gachipuri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928330599825-nhde4bq6imvjb9eb9pd8nh2l04c1btmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpPjbAwL6xsGxzkNrLL1luXeET42DBYTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928330599825-nhde4bq6imvjb9eb9pd8nh2l04c1btmo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "928330599825-6oka31ji83aphgmcbga85qt1mkh41000.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.gachipuri"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

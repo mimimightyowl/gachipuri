@@ -3,8 +3,9 @@ import { useQuery } from 'react-query';
 import { defaultSafeAreaEdges } from '../common/config';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Layout, Text } from '@ui-kitten/components';
-import { View } from 'react-native';
-import { Auth } from 'aws-amplify';
+import { Alert, View } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { authentication } from '../../firebase/firebase-config';
 
 export const HomeScreen = ({ navigation }) => {
   const navigateDetails = () => {
@@ -19,7 +20,15 @@ export const HomeScreen = ({ navigation }) => {
 
   const query = useQuery('todos', getTodos);
 
-  const onSignOutPress = () => Auth.signOut();
+  const onSignOutPress = () =>
+    auth()
+      .signOut(authentication)
+      .then(() => {
+        Alert.alert('Sign-out successful.');
+      })
+      .catch(error => {
+        Alert.alert('An error happened.', error.message);
+      });
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={defaultSafeAreaEdges}>

@@ -15,9 +15,9 @@ import { CustomButton } from '../../components/CustomButton';
 import { useForm, FieldValues } from 'react-hook-form';
 import { EyeWardenIcon } from '../../common/icons/EyeWardenIcon';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../common/config';
-import { Auth } from 'aws-amplify';
 import { useRoute } from '@react-navigation/native';
-
+import { onGoogleButtonPress } from '../../services/SocialAuth/GoogleAuth';
+import auth from '@react-native-firebase/auth';
 export interface ISignInPanel {
   navigation: any;
 }
@@ -65,23 +65,31 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
   const onForgotPasswordPress = () => navigation.navigate('ResetPassword');
 
   const onSignInPress = async (data: FieldValues): Promise<void> => {
+    const { email, password } = data;
+
     if (loading) {
       return;
     }
 
     setLoading(true);
 
-    try {
-      await Auth.signIn(data.email, data.password);
-    } catch (e: any) {
-      Alert.alert('Oops', e.message);
-    }
-    setLoading(false);
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        const user = userCredential.user;
 
-    navigation.navigate('Home');
+        setLoading(false);
+      })
+      .catch(error => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert(errorCode, errorMessage);
+
+        setLoading(false);
+      });
   };
 
-  const onSignUpPress = () => navigation.navigate('SignUp');
+  const onCreateAccountPress = () => navigation.navigate('SignUp');
 
   useEffect(() => {}, [route]);
 
@@ -142,7 +150,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
         name="Continue with Google"
         status="warning"
         accessoryLeft={GoogleIcon}
-        onPress={() => {}}
+        onPress={onGoogleButtonPress}
       />
       <CustomButton
         name="Continue with Facebook"
@@ -164,7 +172,7 @@ export const SignInPanel: React.FC<ISignInPanel> = ({ navigation }) => {
       <CustomButton
         name="Create Account"
         status="info"
-        onPress={onSignUpPress}
+        onPress={onCreateAccountPress}
       />
     </Layout>
   );
